@@ -1,0 +1,947 @@
+:root {
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #2f5fd6;
+  --border: #e2e2e2;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ink);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.top-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ink);
+}
+
+.top-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.top-nav-right a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.primary-button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.15s ease;
+}
+
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.primary-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bell-wrapper, .avatar-wrapper {
+  position: relative;
+}
+
+.bell-button, .avatar-button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+  position: relative;
+}
+
+.bell-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #d64545;
+  color: #fff;
+  border-radius: 999px;
+  font-size: 11px;
+  padding: 1px 6px;
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 220px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  padding: 6px;
+}
+
+.dropdown a, .dropdown button {
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+}
+
+.dropdown a:hover, .dropdown button:hover {
+  background: var(--bg);
+}
+
+.notification-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.notification-item.unread {
+  background: #eef3ff;
+}
+
+.app-main {
+  flex: 1;
+  padding: 32px;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.page-loading {
+  padding: 48px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.page-subtitle {
+  color: var(--muted);
+}
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+.auth-card {
+  width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.field input, .field select {
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(47, 95, 214, 0.15);
+}
+
+.password-row {
+  display: flex;
+  gap: 8px;
+}
+
+.password-row input {
+  flex: 1;
+}
+
+.toggle-password {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  border: 1px solid var(--border);
+  background: none;
+  border-radius: 8px;
+  padding: 0;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.toggle-password:hover {
+  color: var(--ink);
+  border-color: var(--muted);
+}
+
+@keyframes button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.button-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: button-spin 0.6s linear infinite;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.field-error {
+  color: #c22b2b;
+  font-size: 13px;
+  margin: 0;
+}
+
+.field-hint {
+  color: var(--muted);
+  font-size: 12px;
+  margin: 0;
+}
+
+.auth-switch {
+  font-size: 13px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.role-toggle {
+  display: flex;
+  gap: 8px;
+}
+
+.pill {
+  flex: 1;
+  border: 1px solid var(--border);
+  background: none;
+  border-radius: 999px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.pill.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.empty-state {
+  color: var(--muted);
+  font-size: 13px;
+  padding: 12px;
+}
+
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 32px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.top-nav-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.top-nav-link:hover {
+  color: var(--accent);
+}
+
+.ghost-button {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--ink);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ghost-button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.ghost-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- Avatar ---- */
+.avatar-circle {
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatar-circle-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.avatar-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.avatar-upload-field {
+  cursor: pointer;
+}
+
+/* ---- Badge ---- */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.badge-neutral {
+  background: #eef0f3;
+  color: var(--muted);
+}
+
+.badge-success {
+  background: #e4f7ec;
+  color: #1c7a44;
+}
+
+.badge-warning {
+  background: #fdf1dc;
+  color: #a3620a;
+}
+
+.badge-danger {
+  background: #fbe6e6;
+  color: #b4232f;
+}
+
+/* ---- Star rating ---- */
+.star-rating {
+  display: inline-flex;
+  gap: 2px;
+}
+
+.star {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #d8d8d8;
+  line-height: 1;
+}
+
+.star-filled {
+  color: #f0a815;
+}
+
+/* ---- Search + pagination ---- */
+.search-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font: inherit;
+  margin: 12px 0;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---- Skeleton ---- */
+.skeleton-block {
+  display: inline-block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #ececec 25%, #f6f6f6 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.4s ease-in-out infinite;
+}
+
+@keyframes skeleton-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ---- Modal ---- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-card {
+  background: var(--surface);
+  border-radius: 12px;
+  padding: 22px;
+  width: 420px;
+  max-width: calc(100vw - 32px);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: var(--muted);
+}
+
+/* ---- Toast ---- */
+.toast-stack {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 200;
+}
+
+.toast {
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.toast-success {
+  background: #1c7a44;
+}
+
+.toast-error {
+  background: #b4232f;
+}
+
+/* ---- Emoji picker ---- */
+.emoji-picker-wrapper {
+  position: relative;
+}
+
+.emoji-picker-panel {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  z-index: 10;
+}
+
+.emoji-option {
+  background: none;
+  border: none;
+  font-size: 18px;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.emoji-option:hover {
+  background: var(--bg);
+}
+
+/* ---- Image picker ---- */
+.image-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.image-picker-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.image-picker-thumb {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.image-picker-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.image-picker-thumb button {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: #333;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.image-picker-add {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 11px;
+  padding: 4px;
+}
+
+/* ---- Login extras ---- */
+.login-options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.forgot-password-link {
+  font-size: 13px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.forgot-password-link:hover {
+  text-decoration: underline;
+}
+
+/* ---- Component showcase ---- */
+.component-showcase {
+  max-width: 640px;
+}
+
+.showcase-section {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.showcase-section h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.showcase-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ---- Items list ---- */
+.item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.item-row {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  background: var(--surface);
+}
+
+.item-row-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.item-row p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---- Reviews (comments feature) ----
+   Scoped token set — deliberately not the generic blue used elsewhere, so this
+   reads as a considered "reviews" surface rather than the same UI recolored. */
+.reviews-page {
+  --rv-ink: #22261f;
+  --rv-muted: #767d6f;
+  --rv-accent: #3d6a4e;
+  --rv-accent-soft: #e7efe5;
+  --rv-gold: #c08a2e;
+  --rv-border: #e6e2d4;
+  --rv-surface: #fffdf8;
+  max-width: 700px;
+}
+
+.reviews-page h1 {
+  font-family: "Bricolage Grotesque", var(--font-sans, system-ui);
+  font-size: 30px;
+  letter-spacing: -0.01em;
+}
+
+.reviews-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.reviews-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: var(--rv-accent-soft);
+  border-radius: 12px;
+}
+
+.reviews-summary-number {
+  font-family: "Bricolage Grotesque", var(--font-sans, system-ui);
+  font-size: 28px;
+  color: var(--rv-ink);
+  line-height: 1;
+}
+
+.reviews-summary-count {
+  display: block;
+  font-size: 12px;
+  color: var(--rv-muted);
+  margin-top: 2px;
+}
+
+.review-composer {
+  border: 1px solid var(--rv-border);
+  border-radius: 16px;
+  padding: 20px;
+  margin: 20px 0 28px;
+  background: var(--rv-surface);
+  box-shadow: 0 1px 2px rgba(34, 38, 31, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.review-composer-reply {
+  margin: 14px 0 0;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--rv-accent-soft);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.review-composer-rating {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rv-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* One composer surface: text, selected images, and the emoji/submit
+   controls all sit inside the same bordered container, with focus glow
+   applied to the whole thing — not three separate, loosely arranged
+   controls. */
+.review-compose-shell {
+  border: 1px solid var(--rv-border);
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.review-compose-shell:focus-within {
+  border-color: var(--rv-accent);
+  box-shadow: 0 0 0 3px rgba(61, 106, 78, 0.14);
+}
+
+.review-composer-textarea {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: 12px 12px 0 0;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+  background: transparent;
+}
+
+.review-composer-textarea:focus {
+  outline: none;
+}
+
+.review-compose-attachments {
+  padding: 0 14px;
+}
+
+.review-compose-attachments .image-picker {
+  margin: 0;
+  padding: 8px 0;
+  border-top: 1px solid var(--rv-border);
+}
+
+.review-composer-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-top: 1px solid var(--rv-border);
+}
+
+.review-composer-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-composer-toolbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.reviews-page .primary-button {
+  background: var(--rv-accent);
+}
+
+.reviews-page .primary-button:hover:not(:disabled) {
+  background: #335a41;
+}
+
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-card {
+  display: flex;
+  gap: 14px;
+  padding: 18px 20px;
+  background: var(--rv-surface);
+  border: 1px solid var(--rv-border);
+  border-radius: 16px;
+  box-shadow: 0 1px 2px rgba(34, 38, 31, 0.04);
+}
+
+.review-card-skeleton {
+  align-items: center;
+}
+
+.review-card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.review-card-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.review-author {
+  font-family: "Bricolage Grotesque", var(--font-sans, system-ui);
+  font-size: 15px;
+  color: var(--rv-ink);
+}
+
+.review-date {
+  font-size: 12px;
+  color: var(--rv-muted);
+}
+
+.review-rating-row {
+  margin: 4px 0 2px;
+}
+
+.reviews-page .star {
+  color: #dfdccf;
+  filter: none;
+}
+
+.reviews-page .star-filled {
+  color: var(--rv-gold);
+  filter: drop-shadow(0 1px 1px rgba(192, 138, 46, 0.35));
+}
+
+.review-text {
+  margin: 6px 0 10px;
+  color: var(--rv-ink);
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.review-images {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.review-images img {
+  width: 88px;
+  height: 88px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--rv-border);
+  transition: transform 0.15s ease;
+}
+
+.review-images img:hover {
+  transform: scale(1.04);
+}
+
+.review-reply-toggle {
+  background: none;
+  border: none;
+  color: var(--rv-accent);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.review-reply-toggle:hover {
+  text-decoration: underline;
+}
+
+.review-replies {
+  margin-top: 14px;
+  padding-left: 16px;
+  border-left: 2px solid var(--rv-accent-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.review-reply-card {
+  display: flex;
+  gap: 10px;
+}
+
+.review-reply-card .review-author {
+  font-size: 14px;
+}
+
+.review-reply-card .review-text {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.reviews-page .avatar-circle-fallback {
+  background: var(--rv-accent);
+}
+
+.reviews-page .avatar-circle {
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px var(--rv-border);
+}
