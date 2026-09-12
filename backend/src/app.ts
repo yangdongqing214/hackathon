@@ -21,7 +21,7 @@ export function buildApp(): Express {
       secret: process.env.SESSION_SECRET ?? "dev-secret",
       resave: false,
       saveUninitialized: false,
-      store: MongoStore.create({ mongoUrl: process.env.MONGO_URI ?? "mongodb://localhost:27017/app_template" }),
+      store: MongoStore.create({ mongoUrl: process.env.MONGO_URI ?? "mongodb://localhost:27018/app_template" }),
       cookie: { maxAge: 1000 * 60 * 60 * 2 },
     }),
   );
