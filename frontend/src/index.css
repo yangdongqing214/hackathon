@@ -1129,6 +1129,27 @@ body {
    and centered, same convention as the edit form. */
 .nonprofit-detail-page {
   max-width: 1040px;
+  position: relative;
+  min-height: calc(100vh - 170px);
+}
+
+/* Short profiles (no video, brief copy) don't fill a tall viewport — rather
+   than pad the copy or force the layout wider, an ambient tint fills the
+   rest of the viewport behind the content so it reads as a composed page
+   instead of content stranded above a flat gray void. */
+.nonprofit-detail-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  background:
+    radial-gradient(640px circle at 15% 10%, rgba(30, 144, 255, 0.07), transparent 60%),
+    radial-gradient(520px circle at 85% 65%, rgba(30, 144, 255, 0.05), transparent 55%);
+  pointer-events: none;
 }
 
 .nonprofit-detail-layout {
