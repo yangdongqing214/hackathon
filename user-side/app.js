@@ -26,6 +26,14 @@ function nonprofitLinkAttrs() {
   return inAppShell() ? ' target="_top"' : '';
 }
 
+function wireNonprofitBrowseLinks() {
+  if (!inAppShell()) return;
+  for (const link of document.querySelectorAll('[data-browse-nonprofits]')) {
+    link.target = '_top';
+    link.href = link.dataset.browseNonprofits === 'all' ? '/nonprofits' : nonprofitBrowseHref(state.pickerCategory);
+  }
+}
+
 function mapNonprofitCard(item) {
   const category = String(item.category || '').trim().toLowerCase();
   if (!CATEGORY_IDS.includes(category)) return null;
@@ -62,6 +70,7 @@ const defaults = { user: null, clientId: '', saved: null, income: 1000, frequenc
 let charities = [];
 let state = loadState();
 let toastTimer;
+wireNonprofitBrowseLinks();
 
 function freshState() { return { ...structuredClone(defaults), clientId: crypto.randomUUID().replaceAll('-', '') }; }
 
@@ -441,9 +450,13 @@ document.addEventListener('click', event => {
   if (event.target.closest('#refresh-charities')) { refreshCharities(true); return; }
   const browseLink = event.target.closest('[data-browse-nonprofits]');
   if (browseLink) {
+    event.preventDefault();
     if (inAppShell()) {
-      event.preventDefault();
-      window.top.location.href = nonprofitBrowseHref(state.pickerCategory);
+      window.top.location.href = browseLink.dataset.browseNonprofits === 'all'
+        ? '/nonprofits'
+        : nonprofitBrowseHref(state.pickerCategory);
+    } else {
+      location.hash = '#discover';
     }
     return;
   }
@@ -482,6 +495,7 @@ renderPaymentChoice();
 renderAccount();
 renderAllocation();
 renderSavedOverview();
+wireNonprofitBrowseLinks();
 window.addEventListener('hashchange', renderRoute);
 renderRoute();
 loadSavedAllocation();
