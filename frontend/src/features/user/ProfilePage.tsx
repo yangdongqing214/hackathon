@@ -62,14 +62,14 @@ export function ProfilePage(): React.JSX.Element {
         </button>
       </form>
 
-      {user.role === "charity" && (
+      {user.role === "nonprofit" && (
         <section className="auth-card content-reveal" style={{ marginTop: 24 }}>
           <h2>About your organization</h2>
           <p className="page-subtitle">
             Add your organization&apos;s story, category, funding goals, logo, and other information donors see.
           </p>
           <Link to="/nonprofits/me/edit" className="primary-button">
-            Edit charity information
+            Edit nonprofit information
           </Link>
         </section>
       )}

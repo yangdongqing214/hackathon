@@ -12,6 +12,10 @@ export async function register(req: Request, res: Response): Promise<void> {
       res.status(400).json(fail(400, "All fields are required."));
       return;
     }
+    if (role !== "user" && role !== "nonprofit") {
+      res.status(400).json(fail(400, "Invalid role."));
+      return;
+    }
     if (password.length < 8) {
       res.status(400).json(fail(400, "Password needs at least 8 characters."));
       return;

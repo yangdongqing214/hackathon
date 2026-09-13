@@ -6,7 +6,7 @@ import { Avatar } from "../../shared/components/Avatar";
 
 const ROLES = [
   { value: "user", label: "User" },
-  { value: "charity", label: "Charity" },
+  { value: "nonprofit", label: "Nonprofit" },
 ];
 
 export function RegisterPage(): React.JSX.Element {
@@ -34,7 +34,7 @@ export function RegisterPage(): React.JSX.Element {
   }, [avatarFile]);
 
   if (authLoading) return <div className="page-loading">Loading…</div>;
-  if (user) return <Navigate to={user.role === "charity" ? "/charity-dashboard" : "/dashboard"} replace />;
+  if (user) return <Navigate to={user.role === "nonprofit" ? "/nonprofit-dashboard" : "/dashboard"} replace />;
 
   async function handleSubmit(e: FormEvent): Promise<void> {
     e.preventDefault();
@@ -61,9 +61,8 @@ export function RegisterPage(): React.JSX.Element {
       setError(result.message);
       return;
     }
-    // Charity, users redirected to respective dashboards
-    if (role === "charity") {
-      navigate("/charity-dashboard");
+    if (role === "nonprofit") {
+      navigate("/nonprofit-dashboard");
       return;
     }
     navigate("/dashboard");

@@ -10,7 +10,7 @@ export function HomePage(): React.JSX.Element {
   return (
     <div className="auth-page">
       <div className="auth-card">
-        <h1>Welcome to "the Charity fund manager app"</h1>
+        <h1>Welcome to the nonprofit fund manager app</h1>
         <p className="page-subtitle">Please log in to continue.</p>
         <Link to="/login" className="primary-button">
           Log in

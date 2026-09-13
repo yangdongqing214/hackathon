@@ -5,7 +5,7 @@ const userSchema = new Schema(
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password_hash: { type: String, required: true },
-    role: { type: String, required: true, default: "user" },
+    role: { type: String, required: true, enum: ["user", "nonprofit"], default: "user" },
     nickname: { type: String, required: true },
     avatar_url: { type: String, default: null },
     gender: { type: String, default: null },

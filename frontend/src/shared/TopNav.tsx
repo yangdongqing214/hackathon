@@ -9,7 +9,7 @@ export function TopNav(): React.JSX.Element {
   return (
     <nav className="top-nav">
       <Link to="/" className="brand">
-        <img src="/logo/hackathon_logo.jpg" alt="Charity platform home" className="brand-logo" />
+        <img src="/logo/hackathon_logo.jpg" alt="Nonprofit platform home" className="brand-logo" />
       </Link>
       <div className="top-nav-right">
         {user ? (
@@ -19,13 +19,17 @@ export function TopNav(): React.JSX.Element {
               My allocation
             </Link>
             )}
-            
-            <Link to="/home" className="top-nav-link">
-              Home
+            {user.role === "nonprofit" && (
+              <Link to="/nonprofit-dashboard" className="top-nav-link">
+                My nonprofit
+              </Link>
+            )}
+            <Link to="/nonprofits" className="top-nav-link">
+              Nonprofits
             </Link>
-            {user.role == "charity" && (
-              <Link to="/nonprofits" className="top-nav-link">
-                Nonprofits
+            {user.role === "nonprofit" && (
+              <Link to="/nonprofits/me/edit" className="top-nav-link">
+                My org
               </Link>
             )}
             <div className="avatar-wrapper">
@@ -37,11 +41,6 @@ export function TopNav(): React.JSX.Element {
                   <Link to="/profile" onClick={() => setAvatarOpen(false)}>
                     Profile settings
                   </Link>
-                  {(user.role === "nonprofit" || user.role === "charity") && (
-                    <Link to="/nonprofits/me/edit" onClick={() => setAvatarOpen(false)}>
-                      Manage my org
-                    </Link>
-                  )}
                   <button type="button" onClick={() => logout()}>
                     Log out
                   </button>
