@@ -161,6 +161,23 @@ body {
   padding: 32px;
 }
 
+.app-shell:has(.user-side-frame) .app-main {
+  padding: 0;
+  display: flex;
+  min-height: 0;
+}
+
+.app-shell:has(.user-side-frame) .site-footer {
+  display: none;
+}
+
+.user-side-frame {
+  width: 100%;
+  flex: 1;
+  border: 0;
+  min-height: calc(100vh - 64px);
+}
+
 .page {
   max-width: 720px;
   margin: 0 auto;
