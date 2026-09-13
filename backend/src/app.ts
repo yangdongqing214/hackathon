@@ -9,6 +9,7 @@ import { notificationRouter } from "./modules/notification/notification.routes";
 import { itemRouter } from "./modules/item/item.routes";
 import { commentRouter } from "./modules/comment/comment.routes";
 import { nonprofitRouter } from "./modules/nonprofit/nonprofit.routes";
+import { givingRouter } from "./modules/giving/giving.routes";
 import { authMiddleware } from "./middleware/auth.middleware";
 import { sessionRenewalMiddleware } from "./middleware/session-renewal.middleware";
 import { ok, fail } from "./shared/response";
@@ -16,7 +17,7 @@ import { UPLOAD_ROOT } from "./shared/upload";
 
 export function buildApp(): Express {
   const app = express();
-  app.use(cors({ origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:5173", credentials: true }));
+  app.use(cors({ origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:5175", credentials: true }));
   app.use(express.json());
   app.use(
     session({
@@ -38,6 +39,7 @@ export function buildApp(): Express {
   app.use("/api/items", itemRouter);
   app.use("/api/comments", commentRouter);
   app.use("/api/nonprofits", nonprofitRouter);
+  app.use("/api", givingRouter);
 
   // A malformed id in a route param isn't a real ObjectId — treat it as
   // "not found" like any other, not a 500. Without express-async-errors

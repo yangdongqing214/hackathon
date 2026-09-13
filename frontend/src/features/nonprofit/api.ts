@@ -2,8 +2,13 @@ import { apiClient } from "../../shared/api/client";
 import type { NonprofitCard, NonprofitDetail, NonprofitDraft, PagedResult } from "./types";
 
 export const nonprofitApi = {
-  search: (page: number, pageSize: number, category: string) => {
-    const query = new URLSearchParams({ page: String(page), pageSize: String(pageSize), ...(category ? { category } : {}) });
+  search: (page: number, pageSize: number, category: string, keyword: string) => {
+    const query = new URLSearchParams({
+      page: String(page),
+      pageSize: String(pageSize),
+      ...(category ? { category } : {}),
+      ...(keyword ? { keyword } : {}),
+    });
     return apiClient.get<PagedResult<NonprofitCard>>(`/api/nonprofits?${query.toString()}`);
   },
   getDetail: (id: string) => apiClient.get<NonprofitDetail>(`/api/nonprofits/${id}`),

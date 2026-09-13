@@ -18,6 +18,9 @@ export function TopNav(): React.JSX.Element {
       <div className="top-nav-right">
         {user ? (
           <>
+            <Link to="/dashboard" className="top-nav-link">
+              My allocation
+            </Link>
             <Link to="/home" className="top-nav-link">
               Home
             </Link>

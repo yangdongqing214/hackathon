@@ -161,6 +161,23 @@ body {
   padding: 32px;
 }
 
+.app-shell:has(.user-side-frame) .app-main {
+  padding: 0;
+  display: flex;
+  min-height: 0;
+}
+
+.app-shell:has(.user-side-frame) .site-footer {
+  display: none;
+}
+
+.user-side-frame {
+  width: 100%;
+  flex: 1;
+  border: 0;
+  min-height: calc(100vh - 64px);
+}
+
 .page {
   max-width: 720px;
   margin: 0 auto;
@@ -441,6 +458,16 @@ body {
   border-radius: 8px;
   font: inherit;
   margin: 12px 0;
+}
+
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.search-bar .search-input {
+  margin: 0;
 }
 
 .pagination-controls {
@@ -1146,9 +1173,10 @@ body {
   width: 100vw;
   transform: translateX(-50%);
   z-index: -1;
-  background:
-    radial-gradient(640px circle at 15% 10%, rgba(30, 144, 255, 0.07), transparent 60%),
-    radial-gradient(520px circle at 85% 65%, rgba(30, 144, 255, 0.05), transparent 55%);
+  background-color: rgba(30, 144, 255, 0.05);
+  background-image:
+    radial-gradient(760px circle at 12% 8%, rgba(30, 144, 255, 0.22), transparent 62%),
+    radial-gradient(640px circle at 88% 62%, rgba(30, 144, 255, 0.16), transparent 58%);
   pointer-events: none;
 }
 

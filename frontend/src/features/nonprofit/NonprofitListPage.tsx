@@ -6,14 +6,22 @@ import { Avatar } from "../../shared/components/Avatar";
 import { Pagination } from "../../shared/components/Pagination";
 import { EmptyState } from "../../shared/components/EmptyState";
 import { Skeleton } from "../../shared/components/Skeleton";
+import { SearchInput } from "../../shared/components/SearchInput";
 
 export function NonprofitListPage(): React.JSX.Element {
-  const { result, loading, page, setPage, category, setCategory } = useNonprofitList();
+  const { result, loading, page, setPage, category, setCategory, keyword, setKeyword } = useNonprofitList();
 
   return (
     <div className="page nonprofit-list-page">
       <h1>Browse nonprofits</h1>
       <p className="page-subtitle">Find a cause to support, by category.</p>
+
+      <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
+        <SearchInput value={keyword} onChange={setKeyword} placeholder="Search by name or description…" />
+        <button type="submit" className="primary-button">
+          Search
+        </button>
+      </form>
 
       <div className="category-filter-pills">
         <button type="button" className={category === "" ? "pill active" : "pill"} onClick={() => setCategory("")}>
@@ -33,9 +41,9 @@ export function NonprofitListPage(): React.JSX.Element {
           ))}
         </div>
       ) : !result || result.list.length === 0 ? (
-        <EmptyState>No nonprofits in this category yet.</EmptyState>
+        <EmptyState>{keyword ? "No nonprofits match your search." : "No nonprofits in this category yet."}</EmptyState>
       ) : (
-        <div className="content-reveal" key={`${category}-${page}`}>
+        <div className="content-reveal" key={`${category}-${keyword}-${page}`}>
           <div className="nonprofit-grid">
             {result.list.map((org) => (
               <Link key={org.id} to={`/nonprofits/${org.id}`} className="nonprofit-card">

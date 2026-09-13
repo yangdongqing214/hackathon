@@ -7,7 +7,8 @@ export async function search(req: Request, res: Response): Promise<void> {
   const page = Number(req.query.page ?? 1);
   const pageSize = Number(req.query.pageSize ?? 9);
   const category = typeof req.query.category === "string" && req.query.category ? req.query.category : undefined;
-  const result = await nonprofitService.search({ page, pageSize, category });
+  const keyword = typeof req.query.keyword === "string" && req.query.keyword ? req.query.keyword : undefined;
+  const result = await nonprofitService.search({ page, pageSize, category, keyword });
   res.json(ok(result));
 }
 
