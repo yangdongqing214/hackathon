@@ -1,0 +1,9 @@
+{
+  "name": "giving-allocation-user-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test allocation.test.js database.test.js"
+  }
+}
