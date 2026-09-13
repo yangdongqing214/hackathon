@@ -224,7 +224,7 @@ body {
    padding the same way the nonprofit detail page does. */
 .login-page {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-columns: 1fr 1fr;
   margin: -32px;
   min-height: calc(100vh - 106px);
 }
