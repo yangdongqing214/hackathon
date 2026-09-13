@@ -21,44 +21,9 @@ export function TopNav(): React.JSX.Element {
             <Link to="/home" className="top-nav-link">
               Home
             </Link>
-            <Link to="/items" className="top-nav-link">
-              Items
-            </Link>
-            <Link to="/comments" className="top-nav-link">
-              Reviews
-            </Link>
             <Link to="/nonprofits" className="top-nav-link">
               Nonprofits
             </Link>
-            <div className="bell-wrapper">
-              <button type="button" className="bell-button" onClick={() => setBellOpen((v) => !v)}>
-                🔔
-                {unread > 0 && <span className="bell-badge">{unread}</span>}
-              </button>
-              {bellOpen && (
-                <div className="dropdown notification-dropdown">
-                  {items.length === 0 ? (
-                    <p className="empty-state">Nothing yet.</p>
-                  ) : (
-                    items.map((n) => (
-                      <button
-                        key={n.id}
-                        type="button"
-                        className={n.read ? "notification-item" : "notification-item unread"}
-                        onClick={() => {
-                          markRead(n.id);
-                          setBellOpen(false);
-                          if (n.linkPath) navigate(n.linkPath);
-                        }}
-                      >
-                        <strong>{n.title}</strong>
-                        <span>{n.body}</span>
-                      </button>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
             <div className="avatar-wrapper">
               <button type="button" className="avatar-button" onClick={() => setAvatarOpen((v) => !v)}>
                 {user.nickname}
