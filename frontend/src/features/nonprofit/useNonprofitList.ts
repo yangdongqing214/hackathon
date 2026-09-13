@@ -5,7 +5,7 @@ import { useDebouncedValue } from "../../shared/useDebouncedValue";
 
 const PAGE_SIZE = 9;
 
-export function useNonprofitList(): {
+export function useNonprofitList(initialCategory = ""): {
   result: PagedResult<NonprofitCard> | null;
   loading: boolean;
   page: number;
@@ -16,11 +16,15 @@ export function useNonprofitList(): {
   setKeyword: (keyword: string) => void;
 } {
   const [page, setPage] = useState(1);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(initialCategory);
   const [keyword, setKeyword] = useState("");
   const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [result, setResult] = useState<PagedResult<NonprofitCard> | null>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setCategory(initialCategory);
+  }, [initialCategory]);
 
   useEffect(() => setPage(1), [category, debouncedKeyword]);
 

@@ -1023,14 +1023,18 @@ body {
 
 .nonprofit-card {
   display: flex;
+  flex-direction: column;
   gap: 12px;
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 12px;
   background: var(--surface);
-  text-decoration: none;
   color: var(--ink);
   transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.nonprofit-card .ghost-button {
+  align-self: flex-start;
 }
 
 .nonprofit-card:hover {

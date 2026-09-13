@@ -6,6 +6,58 @@ import { TEST_VISA, formatCardNumber, formatExpiry, validateDemoCard } from './p
 if (window.self !== window.top) document.documentElement.classList.add('embedded');
 
 const STORAGE_KEY = 'giving-allocation-demo-v2';
+const CATEGORY_LABEL = { local: 'Local', national: 'National', international: 'International' };
+
+function inAppShell() {
+  return window.self !== window.top;
+}
+
+function nonprofitBrowseHref(categoryId) {
+  if (!inAppShell()) return '#discover';
+  const category = CATEGORY_LABEL[categoryId] || '';
+  return category ? `/nonprofits?category=${encodeURIComponent(category)}` : '/nonprofits';
+}
+
+function nonprofitDetailHref(id) {
+  return inAppShell() ? `/nonprofits/${encodeURIComponent(id)}` : '#discover';
+}
+
+function nonprofitLinkAttrs() {
+  return inAppShell() ? ' target="_top"' : '';
+}
+
+function mapNonprofitCard(item) {
+  const category = String(item.category || '').trim().toLowerCase();
+  if (!CATEGORY_IDS.includes(category)) return null;
+  const name = item.orgName || item.name || '';
+  if (!name) return null;
+  return {
+    id: item.id,
+    category,
+    name,
+    initials: name.split(/\s+/).filter(Boolean).map(word => word[0]).join('').slice(0, 8).toUpperCase() || 'NP',
+    theme: 'blue',
+    logoUrl: item.logoUrl || '',
+    description: item.description || '',
+    cause: item.fundingNeedStatement || item.description || '',
+    goal: Number(item.targetAmount || 0),
+    raised: Number(item.amountRaised || 0),
+    youtubeUrl: item.videoUrl || ''
+  };
+}
+
+async function fetchNonprofitModule() {
+  try {
+    const response = await fetch(apiUrl('/api/nonprofits?page=1&pageSize=100'), { cache: 'no-store', credentials: 'include' });
+    if (!response.ok) return null;
+    const payload = await response.json();
+    const list = payload?.data?.list;
+    if (payload?.code !== 0 || !Array.isArray(list)) return null;
+    return list.map(mapNonprofitCard).filter(Boolean);
+  } catch {
+    return null;
+  }
+}
 const defaults = { user: null, clientId: '', saved: null, income: 1000, frequency: 'one_time', paymentMethod: 'visa_4242', pickerCategory: 'local', categoryShares: { local: 30, national: 30, international: 40 }, charityShares: { local: {}, national: {}, international: {} }, filter: 'all' };
 let charities = [];
 let state = loadState();
@@ -152,7 +204,10 @@ function renderSelections(summary) {
       const charity = charityById(id) || { name: 'Nonprofit details changed', cause: 'Please choose again' };
       return `<div class="selected-charity"><div class="selected-name">${escapeHtml(charity.name)}<small>${money(summary.charities[category.id]?.[id] || 0)} / ${escapeHtml(charity.cause)}</small></div><label class="share-control"><input type="number" min="0" max="100" step="1" value="${shares[id]}" data-share-input="${id}" aria-label="${escapeHtml(charity.name)} share within ${category.name}">%</label><button type="button" class="remove-button" data-remove="${id}" aria-label="Remove ${escapeHtml(charity.name)}" title="Remove nonprofit">×</button></div>`;
     }).join('') : `<div class="empty-selection">No nonprofit selected. ${money(summary.categories[category.id])} in ${category.name} is reserved and unassigned.</div>`;
-    const picker = available.length ? `<div class="inline-picker"><label for="pick-${category.id}">Add a ${category.name} nonprofit</label><div class="inline-picker-row"><select id="pick-${category.id}" data-picker="${category.id}" aria-label="Choose a ${category.name} nonprofit"><option value="">Select a nonprofit…</option>${available.map(charity => `<option value="${charity.id}">${escapeHtml(charity.name)}</option>`).join('')}</select><button type="button" class="add-button" data-add-picked="${category.id}">+ Add</button></div><a href="#discover" class="inline-details-link">View nonprofit details →</a></div>` : `<div class="inline-picker inline-picker-empty">No other published ${category.name} nonprofits are available. <a href="#discover">Explore the directory →</a></div>`;
+    const browse = `<a class="inline-details-link" href="${nonprofitBrowseHref(category.id)}"${nonprofitLinkAttrs()}>Browse ${category.name} nonprofits →</a>`;
+    const picker = available.length
+      ? `<div class="inline-picker"><label>Add a ${category.name} nonprofit</label><p class="picker-hint">These organizations come from the nonprofit directory.</p>${available.map(charity => `<div class="module-pick-row"><span>${escapeHtml(charity.name)}</span><a href="${nonprofitDetailHref(charity.id)}"${nonprofitLinkAttrs()}>Details</a><button type="button" class="add-button" data-add="${charity.id}">+ Add</button></div>`).join('')}${browse}</div>`
+      : `<div class="inline-picker inline-picker-empty">No published ${category.name} nonprofits yet. ${browse}</div>`;
     return `<div class="selection-card"><div class="selection-title"><strong>${category.icon} ${category.name} nonprofits</strong><span>${ids.length ? `${ids.length} selected · 100% assigned` : 'Awaiting selection'}</span></div>${rows}${picker}</div>`;
   }).join('');
 }
@@ -236,10 +291,15 @@ function renderAllocation() {
 
 async function refreshCharities(showMessage = false) {
   try {
-    const response = await fetch(apiUrl('/api/charities'), { cache: 'no-store' });
-    if (!response.ok) throw new Error('Could not load nonprofits');
-    const data = await response.json();
-    charities = data.charities;
+    const fromModule = await fetchNonprofitModule();
+    if (fromModule) {
+      charities = fromModule;
+    } else {
+      const response = await fetch(apiUrl('/api/charities'), { cache: 'no-store' });
+      if (!response.ok) throw new Error('Could not load nonprofits');
+      const data = await response.json();
+      charities = data.charities;
+    }
     let removed = 0;
     for (const categoryId of CATEGORY_IDS) {
       const original = state.charityShares[categoryId];
@@ -364,6 +424,14 @@ document.addEventListener('click', event => {
   if (method) { state.paymentMethod = method; renderPaymentChoice(); renderSaveStatus(); saveState(); return; }
   if (event.target.closest('#save-allocation')) { submitAllocation(); return; }
   if (event.target.closest('#refresh-charities')) { refreshCharities(true); return; }
+  const browseLink = event.target.closest('[data-browse-nonprofits]');
+  if (browseLink) {
+    if (inAppShell()) {
+      event.preventDefault();
+      window.top.location.href = nonprofitBrowseHref(state.pickerCategory);
+    }
+    return;
+  }
   const selectionTab = event.target.closest('[data-selection-tab]')?.dataset.selectionTab;
   if (selectionTab) { state.pickerCategory = selectionTab; renderSelections(allocationSummary(state.income, state.categoryShares, state.charityShares)); saveState(); return; }
   const pickedCategory = event.target.closest('[data-add-picked]')?.dataset.addPicked;

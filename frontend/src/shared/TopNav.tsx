@@ -1,14 +1,10 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../features/auth/useAuth";
-import { useNotifications } from "../features/notification/useNotifications";
 
 export function TopNav(): React.JSX.Element {
   const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [avatarOpen, setAvatarOpen] = useState(false);
-  const [bellOpen, setBellOpen] = useState(false);
-  const { items, unread, markRead } = useNotifications(Boolean(user));
 
   return (
     <nav className="top-nav">
