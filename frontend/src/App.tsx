@@ -22,7 +22,7 @@ export default function App(): React.JSX.Element {
       <TopNav />
       <main className="app-main">
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/home" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
@@ -45,11 +45,7 @@ export default function App(): React.JSX.Element {
           />
           <Route
             path="/home"
-            element={
-              <RequireAuth>
-                <HomePage />
-              </RequireAuth>
-            }
+            element={<HomePage />}
           />
           <Route
             path="/items"
