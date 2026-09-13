@@ -4,6 +4,11 @@ export interface SearchNonprofitsParams {
   page: number;
   pageSize: number;
   category?: string;
+  keyword?: string;
+}
+
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 class NonprofitRepository {
@@ -28,6 +33,10 @@ class NonprofitRepository {
   async search(params: SearchNonprofitsParams): Promise<{ rows: NonprofitDocument[]; total: number }> {
     const filter: Record<string, unknown> = { org_name: { $ne: null } };
     if (params.category) filter.category = params.category;
+    if (params.keyword) {
+      const pattern = new RegExp(escapeRegExp(params.keyword), "i");
+      filter.$or = [{ org_name: pattern }, { description: pattern }];
+    }
     const [rows, total] = await Promise.all([
       NonprofitModel.find(filter)
         .sort({ org_name: 1 })

@@ -443,6 +443,16 @@ body {
   margin: 12px 0;
 }
 
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.search-bar .search-input {
+  margin: 0;
+}
+
 .pagination-controls {
   display: flex;
   align-items: center;
@@ -1146,7 +1156,8 @@ body {
   width: 100vw;
   transform: translateX(-50%);
   z-index: -1;
-  background:
+  background-color: rgba(30, 144, 255, 0.05);
+  background-image:
     radial-gradient(760px circle at 12% 8%, rgba(30, 144, 255, 0.22), transparent 62%),
     radial-gradient(640px circle at 88% 62%, rgba(30, 144, 255, 0.16), transparent 58%);
   pointer-events: none;

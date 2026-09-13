@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { nonprofitApi } from "./api";
 import type { NonprofitCard, PagedResult } from "./types";
+import { useDebouncedValue } from "../../shared/useDebouncedValue";
 
 const PAGE_SIZE = 9;
 
@@ -11,19 +12,23 @@ export function useNonprofitList(): {
   setPage: (page: number) => void;
   category: string;
   setCategory: (category: string) => void;
+  keyword: string;
+  setKeyword: (keyword: string) => void;
 } {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
+  const [keyword, setKeyword] = useState("");
+  const debouncedKeyword = useDebouncedValue(keyword, 300);
   const [result, setResult] = useState<PagedResult<NonprofitCard> | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => setPage(1), [category]);
+  useEffect(() => setPage(1), [category, debouncedKeyword]);
 
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
     const start = Date.now();
-    nonprofitApi.search(page, PAGE_SIZE, category).then(async (res) => {
+    nonprofitApi.search(page, PAGE_SIZE, category, debouncedKeyword).then(async (res) => {
       const remaining = 200 - (Date.now() - start);
       if (remaining > 0) await new Promise((r) => setTimeout(r, remaining));
       if (cancelled) return;
@@ -33,7 +38,7 @@ export function useNonprofitList(): {
     return () => {
       cancelled = true;
     };
-  }, [page, category]);
+  }, [page, category, debouncedKeyword]);
 
-  return { result, loading, page, setPage, category, setCategory };
+  return { result, loading, page, setPage, category, setCategory, keyword, setKeyword };
 }
