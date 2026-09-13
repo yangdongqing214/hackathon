@@ -218,6 +218,142 @@ body {
   gap: 14px;
 }
 
+/* Login gets its own full-bleed split layout instead of sharing the plain
+   centered .auth-page — a lone 380px card on an otherwise empty wide
+   viewport is the whitespace problem being fixed here. Cancels app-main's
+   padding the same way the nonprofit detail page does. */
+.login-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 420px;
+  margin: -32px;
+  min-height: calc(100vh - 106px);
+}
+
+.login-showcase {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 48px;
+  background: linear-gradient(160deg, #eaf4ff 0%, #f7fbff 55%, #ffffff 100%);
+}
+
+.login-showcase-glow {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(420px circle at 22% 24%, rgba(30, 144, 255, 0.16), transparent 60%),
+    radial-gradient(380px circle at 78% 70%, rgba(30, 144, 255, 0.12), transparent 58%);
+  animation: login-glow-drift 14s ease-in-out infinite alternate;
+}
+
+@keyframes login-glow-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-2%, 3%) scale(1.06);
+  }
+}
+
+.login-showcase-icons {
+  position: relative;
+  display: flex;
+  gap: 28px;
+}
+
+.login-showcase-icon {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3f6a94;
+  animation: login-icon-float 5s ease-in-out infinite;
+}
+
+.login-showcase-icon-globe {
+  animation-delay: 0.5s;
+}
+
+.login-showcase-icon-sprout {
+  animation-delay: 1s;
+}
+
+@keyframes login-icon-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.login-showcase-icon svg {
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+}
+
+.login-showcase-icon span {
+  display: block;
+}
+
+.login-showcase-icon::before {
+  content: "";
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(30, 144, 255, 0.16);
+  z-index: -1;
+  margin-top: -6px;
+}
+
+.login-showcase-copy {
+  position: relative;
+  max-width: 320px;
+  text-align: center;
+  color: #3f5b74;
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 380px;
+  margin: auto;
+  align-self: center;
+}
+
+@media (max-width: 900px) {
+  .login-page {
+    grid-template-columns: 1fr;
+  }
+
+  .login-showcase {
+    display: none;
+  }
+
+  .login-form {
+    margin: 40px auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-showcase-glow,
+  .login-showcase-icon {
+    animation: none;
+  }
+}
+
 .field {
   display: flex;
   flex-direction: column;
