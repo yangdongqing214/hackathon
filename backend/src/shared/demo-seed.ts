@@ -108,7 +108,7 @@ const DEMO_NONPROFITS: DemoNonprofit[] = [
     fundingNeedStatement: "Our walk-in cooler failed in July and produce donations have been spoiling before we can distribute them.",
     targetAmount: 12475,
     amountRaised: 7820,
-    videoUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+    videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
   },
   {
     username: "harborlight.mentoring",
@@ -119,7 +119,7 @@ const DEMO_NONPROFITS: DemoNonprofit[] = [
     fundingNeedStatement: "Expanding from 2 partner schools to 5 this fall, which means recruiting and background-checking more mentors.",
     targetAmount: 18300,
     amountRaised: 6480,
-    videoUrl: null,
+    videoUrl: "https://www.youtube.com/watch?v=eIho2S0ZahI",
   },
   {
     username: "coastalridge.wildlife",
@@ -130,7 +130,7 @@ const DEMO_NONPROFITS: DemoNonprofit[] = [
     fundingNeedStatement: "A second rehabilitation aviary would let us stop turning away large raptor intakes during peak migration season.",
     targetAmount: 64200,
     amountRaised: 41850,
-    videoUrl: "https://youtu.be/QH2-TGUlwu4",
+    videoUrl: "https://www.youtube.com/watch?v=eIho2S0ZahI",
   },
   {
     username: "brightpath.literacy",
@@ -141,7 +141,7 @@ const DEMO_NONPROFITS: DemoNonprofit[] = [
     fundingNeedStatement: "Tutor stipends and training materials for the spring cohort are currently unfunded.",
     targetAmount: 27650,
     amountRaised: 19920,
-    videoUrl: null,
+    videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
   },
   {
     username: "clearwater.relief",
@@ -152,7 +152,7 @@ const DEMO_NONPROFITS: DemoNonprofit[] = [
     fundingNeedStatement: "Filtration units for three villages in the current deployment region are waiting on parts funding.",
     targetAmount: 152400,
     amountRaised: 88650,
-    videoUrl: null,
+    videoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
   },
 ];
 

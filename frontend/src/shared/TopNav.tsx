@@ -68,7 +68,7 @@ export function TopNav(): React.JSX.Element {
                   <Link to="/profile" onClick={() => setAvatarOpen(false)}>
                     Profile settings
                   </Link>
-                  {user.role === "nonprofit" && (
+                  {(user.role === "nonprofit" || user.role === "charity") && (
                     <Link to="/nonprofits/me/edit" onClick={() => setAvatarOpen(false)}>
                       Manage my org
                     </Link>
