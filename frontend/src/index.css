@@ -105,6 +105,28 @@ body {
   transition: transform 0.15s ease, border-color 0.15s ease;
 }
 
+.avatar-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px 4px 4px;
+  border-radius: 999px;
+}
+
+.avatar-button img.avatar-circle {
+  display: block;
+}
+
+.avatar-button-name {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .bell-button:hover, .avatar-button:hover {
   border-color: var(--accent);
 }
@@ -533,12 +555,14 @@ body {
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .avatar-circle-fallback {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  line-height: 1;
   background: var(--accent);
   color: #fff;
   font-weight: 600;
@@ -1182,6 +1206,14 @@ body {
   background: var(--surface);
   color: var(--ink);
   transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.nonprofit-card-main {
+  display: flex;
+  flex: 1;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
 }
 
 .nonprofit-card .ghost-button {
