@@ -194,6 +194,20 @@ function renderCategories(summary) {
   document.querySelector('#category-grid').innerHTML = categories.map(category => `<article class="category-card"><div class="category-top"><span class="category-icon">${category.icon}</span><span class="category-name">${category.name}</span></div><p>${category.description}</p><div class="percent-row"><label class="percent-input"><input type="number" min="1" max="98" step="1" value="${state.categoryShares[category.id]}" data-category-input="${category.id}" aria-label="${category.name} percentage"><span>%</span></label><span class="category-amount">${money(summary.categories[category.id])}</span></div><input type="range" min="1" max="98" step="1" value="${state.categoryShares[category.id]}" data-category-range="${category.id}" aria-label="Adjust ${category.name} percentage"></article>`).join('');
 }
 
+// Update values without replacing the slider while the pointer is dragging it.
+function renderCategoryDragPreview() {
+  const summary = allocationSummary(state.income, state.categoryShares, state.charityShares);
+  for (const category of categories) {
+    const value = state.categoryShares[category.id];
+    const slider = document.querySelector(`[data-category-range="${category.id}"]`);
+    const number = document.querySelector(`[data-category-input="${category.id}"]`);
+    slider.value = String(value);
+    number.value = String(value);
+    slider.closest('.category-card').querySelector('.category-amount').textContent = money(summary.categories[category.id]);
+  }
+  document.querySelector('#category-total').textContent = 'Total 100%';
+}
+
 function renderSelections(summary) {
   document.querySelector('#selection-tabs').innerHTML = categories.map(category => `<button type="button" class="selection-tab${state.pickerCategory === category.id ? ' active' : ''}" data-selection-tab="${category.id}" role="tab" aria-selected="${state.pickerCategory === category.id}">${category.name}<small>${Object.keys(state.charityShares[category.id]).length} selected</small></button>`).join('');
   document.querySelector('#selection-list').innerHTML = categories.filter(category => category.id === state.pickerCategory).map(category => {
@@ -387,11 +401,12 @@ document.addEventListener('input', event => {
   const id = event.target.dataset.categoryRange;
   if (!id) return;
   state.categoryShares = changeCategoryPercent(state.categoryShares, id, event.target.value);
-  renderAllocation();
+  renderCategoryDragPreview();
 });
 
 document.addEventListener('change', event => {
   if (event.target.id === 'income') { event.target.value = String(state.income); return; }
+  if (event.target.dataset.categoryRange) { renderAllocation(); return; }
   if (event.target.name === 'frequency') {
     state.frequency = event.target.value; renderAllocation(); return;
   }
