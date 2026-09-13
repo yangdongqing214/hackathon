@@ -272,15 +272,13 @@ body {
   align-items: center;
   gap: 10px;
   width: 76px;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
+  letter-spacing: -0.01em;
   color: #3f6a94;
   text-align: center;
+  white-space: nowrap;
   animation: login-icon-float 5s ease-in-out infinite;
-}
-
-.login-showcase-icon span {
-  max-width: 76px;
 }
 
 .login-showcase-icon-globe {
