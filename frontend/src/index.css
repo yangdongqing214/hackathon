@@ -26,8 +26,10 @@ body {
 
 .top-nav {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
+  gap: 12px;
   padding: 14px 32px;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -41,6 +43,7 @@ body {
 
 .top-nav-right {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 16px;
   position: relative;
@@ -1111,18 +1114,26 @@ body {
   align-items: center;
 }
 
-/* Browse/detail pages hold real grid or two-column content, so they use the
-   platform's own width rather than the shared 720px reading measure — a hard
-   px cap looks fine at 1440 but leaves 60%+ empty on a wide monitor, so this
-   scales with the viewport instead. */
-.nonprofit-list-page,
-.nonprofit-detail-page {
+/* The browse grid genuinely fills extra width with more columns of real
+   content, so it uses the platform's own width instead of the shared 720px
+   reading measure — a hard px cap looks fine at 1440 but leaves 60%+ empty
+   on a wide monitor, so this scales with the viewport instead. */
+.nonprofit-list-page {
   max-width: min(1600px, 92vw);
+}
+
+/* The detail page is one article-length column plus a fixed sidebar, not a
+   grid that can absorb extra width — stretching its container to match the
+   browse page just puts a dead gap between the text and the sidebar instead
+   of using the space. Its own width is sized to what the two columns need
+   and centered, same convention as the edit form. */
+.nonprofit-detail-page {
+  max-width: 1040px;
 }
 
 .nonprofit-detail-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  grid-template-columns: minmax(0, 1fr) 300px;
   gap: 40px;
   align-items: start;
   margin-top: 20px;
