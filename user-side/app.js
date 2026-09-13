@@ -3,6 +3,8 @@ import { CATEGORY_IDS, changeCategoryPercent, changeCharityShare, equalShares, a
 import { apiUrl } from './config.js';
 import { TEST_VISA, formatCardNumber, formatExpiry, validateDemoCard } from './payment-demo.js';
 
+if (window.self !== window.top) document.documentElement.classList.add('embedded');
+
 const STORAGE_KEY = 'giving-allocation-demo-v2';
 const defaults = { user: null, clientId: '', saved: null, income: 1000, frequency: 'one_time', paymentMethod: 'visa_4242', pickerCategory: 'local', categoryShares: { local: 30, national: 30, international: 40 }, charityShares: { local: {}, national: {}, international: {} }, filter: 'all' };
 let charities = [];
