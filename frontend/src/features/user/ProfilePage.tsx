@@ -1,4 +1,5 @@
 import { useEffect, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../auth/useAuth";
 import { userApi } from "./api";
 import { Avatar } from "../../shared/components/Avatar";
@@ -60,6 +61,18 @@ export function ProfilePage(): React.JSX.Element {
           {saving ? "Saving…" : "Save"}
         </button>
       </form>
+
+      {user.role === "charity" && (
+        <section className="auth-card content-reveal" style={{ marginTop: 24 }}>
+          <h2>About your organization</h2>
+          <p className="page-subtitle">
+            Add your organization&apos;s story, category, funding goals, logo, and other information donors see.
+          </p>
+          <Link to="/nonprofits/me/edit" className="primary-button">
+            Edit charity information
+          </Link>
+        </section>
+      )}
     </div>
   );
 }
