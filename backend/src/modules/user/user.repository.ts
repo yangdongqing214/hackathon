@@ -25,6 +25,18 @@ class UserRepository {
     return found !== null;
   }
 
+  async existsByUsernameOrEmailExcluding(
+    excludeId: string,
+    fields: { username?: string; email?: string },
+  ): Promise<boolean> {
+    const or = [];
+    if (fields.username) or.push({ username: fields.username });
+    if (fields.email) or.push({ email: fields.email });
+    if (or.length === 0) return false;
+    const found = await UserModel.findOne({ _id: { $ne: excludeId }, $or: or });
+    return found !== null;
+  }
+
   create(input: {
     username: string;
     email: string;
@@ -55,7 +67,14 @@ class UserRepository {
 
   updateProfile(
     id: string,
-    fields: Partial<{ nickname: string; gender: string; date_of_birth: string; avatar_url: string }>,
+    fields: Partial<{
+      nickname: string;
+      gender: string;
+      date_of_birth: string;
+      avatar_url: string;
+      username: string;
+      email: string;
+    }>,
   ): Promise<UserDocument | null> {
     return UserModel.findByIdAndUpdate(id, { $set: fields }, { new: true });
   }

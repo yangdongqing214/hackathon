@@ -8,8 +8,11 @@ import { mediaUrl } from "../../shared/api/media";
 export function ProfilePage(): React.JSX.Element {
   const { user, refresh } = useAuth();
   const [nickname, setNickname] = useState(user?.nickname ?? "");
+  const [username, setUsername] = useState(user?.username ?? "");
+  const [email, setEmail] = useState(user?.email ?? "");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState("");
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | null>(user?.avatarUrl ? mediaUrl(user.avatarUrl) : null);
 
@@ -26,10 +29,18 @@ export function ProfilePage(): React.JSX.Element {
     e.preventDefault();
     setSaving(true);
     setSaved(false);
+    setError("");
     const form = new FormData();
     form.append("nickname", nickname.trim());
+    form.append("username", username.trim());
+    form.append("email", email.trim());
     if (avatarFile) form.append("avatar", avatarFile);
-    await userApi.updateProfileForm(form);
+    const res = await userApi.updateProfileForm(form);
+    if (res.code !== 0) {
+      setError(res.message);
+      setSaving(false);
+      return;
+    }
     await refresh();
     setAvatarFile(null);
     setSaving(false);
@@ -56,7 +67,16 @@ export function ProfilePage(): React.JSX.Element {
           <span>Nickname</span>
           <input value={nickname} onChange={(e) => setNickname(e.target.value)} />
         </label>
-        {saved && <p className="field-hint">✓ Saved.</p>}
+        <label className="field">
+          <span>Username</span>
+          <input value={username} onChange={(e) => setUsername(e.target.value)} />
+        </label>
+        <label className="field">
+          <span>Email</span>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </label>
+        {error && <p className="field-error content-reveal">{error}</p>}
+        {saved && !error && <p className="field-hint content-reveal">✓ Saved.</p>}
         <button type="submit" className="primary-button" disabled={saving}>
           {saving ? "Saving…" : "Save"}
         </button>
