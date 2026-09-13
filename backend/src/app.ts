@@ -14,7 +14,26 @@ import { UPLOAD_ROOT } from "./shared/upload";
 
 export function buildApp(): Express {
   const app = express();
-  app.use(cors({ origin: process.env.FRONTEND_ORIGIN ?? "http://localhost:5173", credentials: true }));
+  // Allow all standard local Vite development ports (5173, 5174, 5175) to prevent CORS blocks
+  const allowedOrigins = [
+    process.env.FRONTEND_ORIGIN,
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://localhost:5175",
+  ].filter(Boolean) as string[];
+
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(null, false);
+        }
+      },
+      credentials: true,
+    }),
+  );
   app.use(express.json());
   app.use(
     session({

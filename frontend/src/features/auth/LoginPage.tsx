@@ -23,14 +23,21 @@ export function LoginPage(): React.JSX.Element {
       setError("Enter your username/email and password.");
       return;
     }
+    // Wrap submission in try/catch/finally to guarantee resetting the loading spinner state
     setSubmitting(true);
-    const result = await login({ identifier: identifier.trim(), password, rememberMe });
-    setSubmitting(false);
-    if (!result.ok) {
-      setError(result.message);
-      return;
+    try {
+      const result = await login({ identifier: identifier.trim(), password, rememberMe });
+      if (!result.ok) {
+        setError(result.message);
+        return;
+      }
+      navigate("/dashboard");
+    } catch (err) {
+      setError("An unexpected error occurred. Please try again.");
+    } finally {
+      // Ensure button state is unlocked even on network failure or unexpected exceptions
+      setSubmitting(false);
     }
-    navigate("/dashboard");
   }
 
   return (

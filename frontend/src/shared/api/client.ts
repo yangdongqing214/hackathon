@@ -6,18 +6,38 @@ export interface ApiResponse<T> {
 
 const BASE_URL = "http://localhost:4000";
 
+// Fallback error handler to prevent UI loading state hangs on network/server errors
 async function request<T>(path: string, init?: RequestInit): Promise<ApiResponse<T>> {
-  const res = await fetch(`${BASE_URL}${path}`, {
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    ...init,
-  });
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, {
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      ...init,
+    });
+    return await res.json();
+  } catch (err) {
+    // Return structured API response when backend is unreachable or request is blocked
+    return {
+      code: -1,
+      message: "Unable to connect to backend server. Make sure the backend is running on http://localhost:4000.",
+      data: null as unknown as T,
+    };
+  }
 }
 
+// Fallback error handler for multipart/form-data requests
 async function requestForm<T>(path: string, form: FormData): Promise<ApiResponse<T>> {
-  const res = await fetch(`${BASE_URL}${path}`, { method: "POST", credentials: "include", body: form });
-  return res.json();
+  try {
+    const res = await fetch(`${BASE_URL}${path}`, { method: "POST", credentials: "include", body: form });
+    return await res.json();
+  } catch (err) {
+    // Return structured API response when backend is unreachable or request is blocked
+    return {
+      code: -1,
+      message: "Unable to connect to backend server. Make sure the backend is running on http://localhost:4000.",
+      data: null as unknown as T,
+    };
+  }
 }
 
 export const apiClient = {

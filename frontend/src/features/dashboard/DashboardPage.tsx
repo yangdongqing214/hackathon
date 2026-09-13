@@ -1,8 +1,10 @@
+import { Navigate } from "react-router-dom";
 import { useAuth } from "../auth/useAuth";
 
 export function DashboardPage(): React.JSX.Element {
   const { user } = useAuth();
   if (!user) return <></>;
+  if (user.role === "charity") return <Navigate to="/charity-dashboard" />;
   return (
     <div className="page">
       <h1>Welcome, {user.nickname}</h1>
