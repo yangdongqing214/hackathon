@@ -7,6 +7,7 @@ import { ForgotPasswordPage } from "./features/auth/ForgotPasswordPage";
 import { ResetPasswordPage } from "./features/auth/ResetPasswordPage";
 import { RequireAuth } from "./features/auth/RequireAuth";
 import { DashboardPage } from "./features/dashboard/DashboardPage";
+import { CharityDashboardPage } from "./features/dashboard/CharityDashboardPage";
 import { ProfilePage } from "./features/user/ProfilePage";
 import { HomePage } from "./features/home/HomePage";
 import { ItemsListPage } from "./features/items/ItemsListPage";
@@ -31,6 +32,14 @@ export default function App(): React.JSX.Element {
             element={
               <RequireAuth>
                 <DashboardPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/charity-dashboard"
+            element={
+              <RequireAuth role="charity">
+                <CharityDashboardPage />
               </RequireAuth>
             }
           />
