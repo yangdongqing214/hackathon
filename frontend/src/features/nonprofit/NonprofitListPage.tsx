@@ -17,7 +17,8 @@ export function NonprofitListPage(): React.JSX.Element {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryParam = searchParams.get("category") ?? "";
-  const { result, loading, page, setPage, category, setCategory, keyword, setKeyword } = useNonprofitList(categoryParam);
+  const { result, loading, page, setPage, category, setCategory, keyword, setKeyword, appliedKeyword, submitKeyword } =
+    useNonprofitList(categoryParam);
   const canAddToPlan = user?.role === "user";
 
   function changeCategory(next: string): void {
@@ -37,7 +38,13 @@ export function NonprofitListPage(): React.JSX.Element {
       <h1>Browse nonprofits</h1>
       <p className="page-subtitle">Find a cause to support, by category.</p>
 
-      <form className="search-bar" onSubmit={(e) => e.preventDefault()}>
+      <form
+        className="search-bar"
+        onSubmit={(e) => {
+          e.preventDefault();
+          submitKeyword();
+        }}
+      >
         <SearchInput value={keyword} onChange={setKeyword} placeholder="Search by name or description…" />
         <button type="submit" className="primary-button">
           Search
@@ -62,9 +69,9 @@ export function NonprofitListPage(): React.JSX.Element {
           ))}
         </div>
       ) : !result || result.list.length === 0 ? (
-        <EmptyState>{keyword ? "No nonprofits match your search." : "No nonprofits in this category yet."}</EmptyState>
+        <EmptyState>{appliedKeyword ? "No nonprofits match your search." : "No nonprofits in this category yet."}</EmptyState>
       ) : (
-        <div className="content-reveal" key={`${category}-${keyword}-${page}`}>
+        <div className="content-reveal" key={`${category}-${appliedKeyword}-${page}`}>
           <div className="nonprofit-grid">
             {result.list.map((org) => (
               <div key={org.id} className="nonprofit-card">
