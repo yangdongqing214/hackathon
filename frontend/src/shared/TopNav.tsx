@@ -19,11 +19,6 @@ export function TopNav(): React.JSX.Element {
               My allocation
             </Link>
             )}
-            {user.role === "nonprofit" && (
-              <Link to="/nonprofit-dashboard" className="top-nav-link">
-                My nonprofit
-              </Link>
-            )}
             <Link to="/nonprofits" className="top-nav-link">
               Nonprofits
             </Link>
