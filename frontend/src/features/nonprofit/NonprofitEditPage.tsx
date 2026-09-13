@@ -65,7 +65,7 @@ export function NonprofitEditPage(): React.JSX.Element {
       <h1>Org backend</h1>
       <p className="page-subtitle">Manage how your organization appears to donors.</p>
 
-      <form className="auth-card nonprofit-edit-form" onSubmit={handleSubmit}>
+      <form className="auth-card nonprofit-edit-form content-reveal" onSubmit={handleSubmit}>
         <div className="nonprofit-edit-logo-row">
           <Avatar src={logoPreview} name={orgName || "Org"} size={64} />
           <label className="ghost-button">
@@ -133,11 +133,12 @@ export function NonprofitEditPage(): React.JSX.Element {
           <span className="field-hint">Direct video upload isn't supported — link a YouTube video instead.</span>
         </label>
 
-        {error && <p className="field-error">{error}</p>}
-        {saved && !error && <p className="field-hint">✓ Saved.</p>}
+        {error && <p className="field-error content-reveal">{error}</p>}
+        {saved && !error && <p className="field-hint content-reveal">✓ Saved.</p>}
 
         <div className="nonprofit-edit-actions">
           <button type="submit" className="primary-button" disabled={saving}>
+            {saving && <span className="button-spinner" aria-hidden="true" />}
             {saving ? "Saving…" : "Save"}
           </button>
           <Link to="/nonprofits" className="ghost-button">

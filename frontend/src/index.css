@@ -71,6 +71,10 @@ body {
   transform: translateY(-1px);
 }
 
+.primary-button:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}
+
 .primary-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -87,6 +91,15 @@ body {
   padding: 6px 12px;
   cursor: pointer;
   position: relative;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.bell-button:hover, .avatar-button:hover {
+  border-color: var(--accent);
+}
+
+.bell-button:active, .avatar-button:active {
+  transform: scale(0.94);
 }
 
 .bell-badge {
@@ -276,6 +289,11 @@ body {
   border-radius: 999px;
   padding: 8px;
   cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.pill:active {
+  transform: scale(0.96);
 }
 
 .pill.active {
@@ -322,11 +340,16 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
 }
 
 .ghost-button:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
+}
+
+.ghost-button:active:not(:disabled) {
+  transform: scale(0.97);
 }
 
 .ghost-button:disabled {
@@ -1024,11 +1047,19 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  margin: 20px 0;
 }
 
 .nonprofit-detail-section {
   margin-top: 24px;
+}
+
+.nonprofit-detail-main > p,
+.nonprofit-detail-main .nonprofit-detail-section {
+  max-width: 68ch;
+}
+
+.nonprofit-detail-aside .nonprofit-detail-section {
+  margin-top: 0;
 }
 
 .nonprofit-progress-bar {
@@ -1045,7 +1076,7 @@ body {
   background: var(--accent);
   transform-origin: left;
   border-radius: inherit;
-  transition: transform 0.3s ease;
+  animation: nonprofit-progress-grow 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .nonprofit-video-frame {
@@ -1078,4 +1109,81 @@ body {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+/* Browse/detail pages hold real grid or two-column content, so they use the
+   platform's own width rather than the shared 720px reading measure — a hard
+   px cap looks fine at 1440 but leaves 60%+ empty on a wide monitor, so this
+   scales with the viewport instead. */
+.nonprofit-list-page,
+.nonprofit-detail-page {
+  max-width: min(1600px, 92vw);
+}
+
+.nonprofit-detail-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
+  gap: 40px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.nonprofit-detail-aside {
+  position: sticky;
+  top: 20px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 760px) {
+  .nonprofit-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .nonprofit-detail-aside {
+    position: static;
+  }
+}
+
+@keyframes content-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-reveal {
+  animation: content-reveal-in 0.3s ease-out both;
+}
+
+@keyframes nonprofit-progress-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(var(--fill, 1));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-reveal,
+  .nonprofit-progress-bar-fill,
+  .nonprofit-card,
+  .primary-button,
+  .ghost-button,
+  .pill,
+  .bell-button,
+  .avatar-button {
+    animation: none !important;
+    transition: none !important;
+  }
 }

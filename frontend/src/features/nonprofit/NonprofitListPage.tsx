@@ -35,7 +35,7 @@ export function NonprofitListPage(): React.JSX.Element {
       ) : !result || result.list.length === 0 ? (
         <EmptyState>No nonprofits in this category yet.</EmptyState>
       ) : (
-        <>
+        <div className="content-reveal" key={`${category}-${page}`}>
           <div className="nonprofit-grid">
             {result.list.map((org) => (
               <Link key={org.id} to={`/nonprofits/${org.id}`} className="nonprofit-card">
@@ -49,7 +49,7 @@ export function NonprofitListPage(): React.JSX.Element {
             ))}
           </div>
           <Pagination page={page} totalPages={result.totalPages} onChange={setPage} />
-        </>
+        </div>
       )}
     </div>
   );

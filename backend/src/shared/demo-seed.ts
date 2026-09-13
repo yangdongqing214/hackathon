@@ -3,6 +3,7 @@ import path from "path";
 import bcrypt from "bcryptjs";
 import { UserModel } from "../modules/user/user.model";
 import { CommentModel } from "../modules/comment/comment.model";
+import { NonprofitModel } from "../modules/nonprofit/nonprofit.model";
 import { UPLOAD_ROOT, publicPath } from "./upload";
 
 const TARGET_TYPE = "demo";
@@ -84,6 +85,109 @@ const DEMO_COMMENTS: DemoComment[] = [
     body: "Ran into a port conflict with another Mongo container on first boot — worth calling out in the README up front.",
   },
 ];
+
+interface DemoNonprofit {
+  username: string;
+  email: string;
+  orgName: string;
+  category: string;
+  description: string;
+  fundingNeedStatement: string;
+  targetAmount: number;
+  amountRaised: number;
+  videoUrl: string | null;
+}
+
+const DEMO_NONPROFITS: DemoNonprofit[] = [
+  {
+    username: "riverbend.pantry",
+    email: "contact@riverbendpantry.demo",
+    orgName: "Riverbend Community Pantry",
+    category: "Local",
+    description: "We run a weekly free grocery market out of a converted rail depot, serving about 340 households in the Riverbend neighborhood.",
+    fundingNeedStatement: "Our walk-in cooler failed in July and produce donations have been spoiling before we can distribute them.",
+    targetAmount: 12475,
+    amountRaised: 7820,
+    videoUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+  },
+  {
+    username: "harborlight.mentoring",
+    email: "hello@harborlightyouth.demo",
+    orgName: "Harborlight Youth Mentoring",
+    category: "Local",
+    description: "Pairs high schoolers with working professionals for a school-year mentoring cycle, focused on first-generation college applicants.",
+    fundingNeedStatement: "Expanding from 2 partner schools to 5 this fall, which means recruiting and background-checking more mentors.",
+    targetAmount: 18300,
+    amountRaised: 6480,
+    videoUrl: null,
+  },
+  {
+    username: "coastalridge.wildlife",
+    email: "info@coastalridgewildlife.demo",
+    orgName: "Coastal Ridge Wildlife Trust",
+    category: "National",
+    description: "Maintains wildlife corridors along migratory routes and funds rehabilitation for injured raptors and shorebirds.",
+    fundingNeedStatement: "A second rehabilitation aviary would let us stop turning away large raptor intakes during peak migration season.",
+    targetAmount: 64200,
+    amountRaised: 41850,
+    videoUrl: "https://youtu.be/QH2-TGUlwu4",
+  },
+  {
+    username: "brightpath.literacy",
+    email: "team@brightpathliteracy.demo",
+    orgName: "Bright Path Literacy Initiative",
+    category: "National",
+    description: "Trains volunteer reading tutors and places them in under-resourced elementary schools across six states.",
+    fundingNeedStatement: "Tutor stipends and training materials for the spring cohort are currently unfunded.",
+    targetAmount: 27650,
+    amountRaised: 19920,
+    videoUrl: null,
+  },
+  {
+    username: "clearwater.relief",
+    email: "ops@clearwaterrelief.demo",
+    orgName: "Clearwater Relief International",
+    category: "International",
+    description: "Installs gravity-fed water filtration systems in flood-affected communities and trains local technicians to maintain them.",
+    fundingNeedStatement: "Filtration units for three villages in the current deployment region are waiting on parts funding.",
+    targetAmount: 152400,
+    amountRaised: 88650,
+    videoUrl: null,
+  },
+];
+
+export async function ensureNonprofitsSeeded(): Promise<void> {
+  const existing = await NonprofitModel.countDocuments({ org_name: { $ne: null } });
+  if (existing > 0) return;
+
+  const passwordHash = await bcrypt.hash("password123", 10);
+  for (const org of DEMO_NONPROFITS) {
+    let user = await UserModel.findOne({ username: org.username });
+    if (!user) {
+      user = await UserModel.create({
+        username: org.username,
+        email: org.email,
+        password_hash: passwordHash,
+        role: "nonprofit",
+        nickname: org.orgName,
+      });
+    }
+    await NonprofitModel.findOneAndUpdate(
+      { owner_user_id: user._id.toString() },
+      {
+        owner_user_id: user._id.toString(),
+        org_name: org.orgName,
+        category: org.category,
+        description: org.description,
+        funding_need_statement: org.fundingNeedStatement,
+        target_amount: org.targetAmount,
+        amount_raised: org.amountRaised,
+        video_url: org.videoUrl,
+      },
+      { upsert: true },
+    );
+  }
+}
 
 export async function ensureDemoDataSeeded(): Promise<void> {
   const existing = await CommentModel.countDocuments({ target_type: TARGET_TYPE, target_id: TARGET_ID });
