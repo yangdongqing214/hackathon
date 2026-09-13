@@ -6,7 +6,7 @@ import { Avatar } from "../../shared/components/Avatar";
 
 const ROLES = [
   { value: "user", label: "User" },
-  { value: "admin", label: "Admin" },
+  { value: "charity", label: "Charity" },
 ];
 
 export function RegisterPage(): React.JSX.Element {
