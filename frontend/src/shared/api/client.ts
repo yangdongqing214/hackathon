@@ -15,8 +15,8 @@ async function request<T>(path: string, init?: RequestInit): Promise<ApiResponse
   return res.json();
 }
 
-async function requestForm<T>(path: string, form: FormData): Promise<ApiResponse<T>> {
-  const res = await fetch(`${BASE_URL}${path}`, { method: "POST", credentials: "include", body: form });
+async function requestForm<T>(path: string, form: FormData, method: "POST" | "PUT" = "POST"): Promise<ApiResponse<T>> {
+  const res = await fetch(`${BASE_URL}${path}`, { method, credentials: "include", body: form });
   return res.json();
 }
 
@@ -27,5 +27,6 @@ export const apiClient = {
   put: <T>(path: string, body?: unknown): Promise<ApiResponse<T>> =>
     request<T>(path, { method: "PUT", body: body ? JSON.stringify(body) : undefined }),
   // multipart/form-data — never set Content-Type manually, the browser fills in the boundary.
-  postForm: <T>(path: string, form: FormData): Promise<ApiResponse<T>> => requestForm<T>(path, form),
+  postForm: <T>(path: string, form: FormData): Promise<ApiResponse<T>> => requestForm<T>(path, form, "POST"),
+  putForm: <T>(path: string, form: FormData): Promise<ApiResponse<T>> => requestForm<T>(path, form, "PUT"),
 };

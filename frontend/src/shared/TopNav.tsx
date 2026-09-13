@@ -27,6 +27,9 @@ export function TopNav(): React.JSX.Element {
             <Link to="/comments" className="top-nav-link">
               Reviews
             </Link>
+            <Link to="/nonprofits" className="top-nav-link">
+              Nonprofits
+            </Link>
             <div className="bell-wrapper">
               <button type="button" className="bell-button" onClick={() => setBellOpen((v) => !v)}>
                 🔔
@@ -65,6 +68,11 @@ export function TopNav(): React.JSX.Element {
                   <Link to="/profile" onClick={() => setAvatarOpen(false)}>
                     Profile settings
                   </Link>
+                  {user.role === "nonprofit" && (
+                    <Link to="/nonprofits/me/edit" onClick={() => setAvatarOpen(false)}>
+                      Manage my org
+                    </Link>
+                  )}
                   <button type="button" onClick={() => logout()}>
                     Log out
                   </button>

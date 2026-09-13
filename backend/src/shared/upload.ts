@@ -21,6 +21,7 @@ export const uploadCommentImages = multer({
   storage: storageFor("comment-images"),
   limits: { fileSize: 5 * 1024 * 1024, files: 4 },
 });
+export const uploadNonprofitLogo = multer({ storage: storageFor("nonprofit-logos"), limits: { fileSize: 5 * 1024 * 1024 } });
 
 export function publicPath(subdir: string, filename: string): string {
   return `/uploads/${subdir}/${filename}`;

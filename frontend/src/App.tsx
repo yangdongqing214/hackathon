@@ -11,6 +11,9 @@ import { ProfilePage } from "./features/user/ProfilePage";
 import { HomePage } from "./features/home/HomePage";
 import { ItemsListPage } from "./features/items/ItemsListPage";
 import { CommentsPage } from "./features/comments/CommentsPage";
+import { NonprofitListPage } from "./features/nonprofit/NonprofitListPage";
+import { NonprofitDetailPage } from "./features/nonprofit/NonprofitDetailPage";
+import { NonprofitEditPage } from "./features/nonprofit/NonprofitEditPage";
 
 export default function App(): React.JSX.Element {
   return (
@@ -60,6 +63,30 @@ export default function App(): React.JSX.Element {
             element={
               <RequireAuth>
                 <ProfilePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/nonprofits"
+            element={
+              <RequireAuth>
+                <NonprofitListPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/nonprofits/me/edit"
+            element={
+              <RequireAuth>
+                <NonprofitEditPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/nonprofits/:id"
+            element={
+              <RequireAuth>
+                <NonprofitDetailPage />
               </RequireAuth>
             }
           />
