@@ -81,6 +81,38 @@ export async function listPublishedCharities(): Promise<CharityDto[]> {
 
 class GivingValidationError extends Error {}
 
+interface SavedCategory {
+  charities: { id: string; amount: number }[];
+}
+
+function charityAmountsFromSnapshot(snapshot: { categories?: SavedCategory[] } | null | undefined): Map<string, number> {
+  const amounts = new Map<string, number>();
+  for (const category of snapshot?.categories ?? []) {
+    for (const charity of category.charities ?? []) {
+      amounts.set(charity.id, (amounts.get(charity.id) ?? 0) + charity.amount);
+    }
+  }
+  return amounts;
+}
+
+// A resubmitted plan replaces the prior one rather than stacking on top of
+// it — reverse the previous submission's amounts before applying the new
+// ones, so amount_raised reflects only the currently-active simulated plan.
+async function applyRaisedDeltas(
+  oldSnapshot: { categories?: SavedCategory[] } | null | undefined,
+  newSnapshot: { categories?: SavedCategory[] },
+): Promise<void> {
+  const oldAmounts = charityAmountsFromSnapshot(oldSnapshot);
+  const newAmounts = charityAmountsFromSnapshot(newSnapshot);
+  const ids = new Set([...oldAmounts.keys(), ...newAmounts.keys()]);
+  await Promise.all(
+    Array.from(ids).map((id) => {
+      const delta = (newAmounts.get(id) ?? 0) - (oldAmounts.get(id) ?? 0);
+      return delta !== 0 ? NonprofitModel.updateOne({ _id: id }, { $inc: { amount_raised: delta } }) : null;
+    }),
+  );
+}
+
 function shortText(value: unknown, max: number, label: string, required = false): string {
   if (typeof value !== "string") throw new GivingValidationError(`${label} must be text`);
   const text = value.trim();
@@ -149,6 +181,8 @@ export async function saveAllocation(input: Record<string, unknown>): Promise<un
       })),
     })),
   };
+  const existing = await AllocationModel.findOne({ client_id: clientId });
+  await applyRaisedDeltas(existing?.snapshot as { categories?: SavedCategory[] } | undefined, snapshot);
   await AllocationModel.findOneAndUpdate({ client_id: clientId }, { snapshot }, { upsert: true, new: true });
   return snapshot;
 }
