@@ -36,9 +36,17 @@ body {
 }
 
 .brand {
-  font-weight: 700;
   text-decoration: none;
   color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+}
+
+.brand-logo {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
 }
 
 .top-nav-right {

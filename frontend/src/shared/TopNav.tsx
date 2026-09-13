@@ -9,20 +9,25 @@ export function TopNav(): React.JSX.Element {
   return (
     <nav className="top-nav">
       <Link to="/" className="brand">
-        App
+        <img src="/logo/hackathon_logo.jpg" alt="Charity platform home" className="brand-logo" />
       </Link>
       <div className="top-nav-right">
         {user ? (
           <>
-            <Link to="/dashboard" className="top-nav-link">
+            {user.role == "user" && (
+              <Link to="/dashboard" className="top-nav-link">
               My allocation
             </Link>
+            )}
+            
             <Link to="/home" className="top-nav-link">
               Home
             </Link>
-            <Link to="/nonprofits" className="top-nav-link">
-              Nonprofits
-            </Link>
+            {user.role == "charity" && (
+              <Link to="/nonprofits" className="top-nav-link">
+                Nonprofits
+              </Link>
+            )}
             <div className="avatar-wrapper">
               <button type="button" className="avatar-button" onClick={() => setAvatarOpen((v) => !v)}>
                 {user.nickname}
