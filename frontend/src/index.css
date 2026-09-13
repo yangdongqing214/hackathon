@@ -464,6 +464,7 @@ body {
   display: flex;
   gap: 8px;
   margin: 12px 0;
+  max-width: 480px;
 }
 
 .search-bar .search-input {
@@ -1157,7 +1158,11 @@ body {
 .nonprofit-detail-page {
   max-width: 1040px;
   position: relative;
-  min-height: calc(100vh - 170px);
+  min-height: calc(100vh - 106px);
+  margin-top: -32px;
+  margin-bottom: -32px;
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 /* Short profiles (no video, brief copy) don't fill a tall viewport — rather
