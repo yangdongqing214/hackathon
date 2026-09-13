@@ -10,7 +10,9 @@ export function TopNav(): React.JSX.Element {
     <nav className="top-nav">
       <Link to="/" className="brand">
         <img src="/logo/hackathon_logo.jpg" alt="Nonprofit platform home" className="brand-logo" />
+        <span className="brand-name">Dono Site</span>
       </Link>
+      
       <div className="top-nav-right">
         {user ? (
           <>
