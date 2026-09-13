@@ -271,10 +271,16 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  font-size: 12px;
+  width: 76px;
+  font-size: 11px;
   font-weight: 600;
   color: #3f6a94;
+  text-align: center;
   animation: login-icon-float 5s ease-in-out infinite;
+}
+
+.login-showcase-icon span {
+  max-width: 76px;
 }
 
 .login-showcase-icon-globe {
