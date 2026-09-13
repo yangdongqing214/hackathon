@@ -34,7 +34,7 @@ export function RegisterPage(): React.JSX.Element {
   }, [avatarFile]);
 
   if (authLoading) return <div className="page-loading">Loading…</div>;
-  if (user) return <Navigate to="/dashboard" replace />;
+  if (user) return <Navigate to={user.role === "charity" ? "/charity-dashboard" : "/dashboard"} replace />;
 
   async function handleSubmit(e: FormEvent): Promise<void> {
     e.preventDefault();
@@ -59,6 +59,11 @@ export function RegisterPage(): React.JSX.Element {
     setSubmitting(false);
     if (!result.ok) {
       setError(result.message);
+      return;
+    }
+    // Charity, users redirected to respective dashboards
+    if (role === "charity") {
+      navigate("/charity-dashboard");
       return;
     }
     navigate("/dashboard");
