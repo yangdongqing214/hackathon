@@ -5,7 +5,7 @@ export function DashboardPage(): React.JSX.Element {
   const { user } = useAuth();
   const [params] = useSearchParams();
   if (!user) return <></>;
-  if (user.role === "nonprofit") return <Navigate to="/nonprofit-dashboard" replace />;
+  if (user.role === "nonprofit") return <Navigate to="/nonprofits" replace />;
 
   const step = params.get("step") === "2" ? "step2" : params.get("step") === "3" ? "step3" : "step1";
 
