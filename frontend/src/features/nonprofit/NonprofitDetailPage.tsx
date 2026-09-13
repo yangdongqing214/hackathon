@@ -1,7 +1,10 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { useNonprofitDetail } from "./useNonprofitDetail";
 import { Avatar } from "../../shared/components/Avatar";
 import { mediaUrl } from "../../shared/api/media";
+import { useAuth } from "../auth/useAuth";
+import { useToast } from "../../shared/components/ToastProvider";
+import { addNonprofitToPlan } from "./planStorage";
 
 const currency = (n: number) => `$${n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
 
@@ -15,6 +18,9 @@ function youtubeEmbedUrl(url: string): string | null {
 export function NonprofitDetailPage(): React.JSX.Element {
   const { id } = useParams<{ id: string }>();
   const { detail, loading, notFound } = useNonprofitDetail(id);
+  const { user } = useAuth();
+  const showToast = useToast();
+  const navigate = useNavigate();
 
   if (loading) return <div className="page-loading">Loading…</div>;
 
@@ -67,6 +73,20 @@ export function NonprofitDetailPage(): React.JSX.Element {
               {detail.category && <span className="nonprofit-card-category">{detail.category}</span>}
             </div>
           </div>
+
+          {user?.role === "user" && (
+            <button
+              type="button"
+              className="primary-button"
+              onClick={() => {
+                const result = addNonprofitToPlan({ id: detail.id, category: detail.category });
+                showToast(result.message, result.ok ? "success" : "error");
+                if (result.ok) navigate("/dashboard?step=2");
+              }}
+            >
+              Add to my plan
+            </button>
+          )}
 
           {detail.targetAmount != null && (
             <div className="nonprofit-detail-section">
