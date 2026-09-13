@@ -17,12 +17,14 @@ export function TopNav(): React.JSX.Element {
             <Link to="/dashboard" className="top-nav-link">
               My allocation
             </Link>
-            <Link to="/home" className="top-nav-link">
-              Home
-            </Link>
             <Link to="/nonprofits" className="top-nav-link">
               Nonprofits
             </Link>
+            {(user.role === "nonprofit" || user.role === "charity") && (
+              <Link to="/nonprofits/me/edit" className="top-nav-link">
+                My org
+              </Link>
+            )}
             <div className="avatar-wrapper">
               <button type="button" className="avatar-button" onClick={() => setAvatarOpen((v) => !v)}>
                 {user.nickname}
@@ -32,11 +34,6 @@ export function TopNav(): React.JSX.Element {
                   <Link to="/profile" onClick={() => setAvatarOpen(false)}>
                     Profile settings
                   </Link>
-                  {(user.role === "nonprofit" || user.role === "charity") && (
-                    <Link to="/nonprofits/me/edit" onClick={() => setAvatarOpen(false)}>
-                      Manage my org
-                    </Link>
-                  )}
                   <button type="button" onClick={() => logout()}>
                     Log out
                   </button>
