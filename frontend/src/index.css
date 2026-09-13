@@ -217,17 +217,20 @@ body {
   font-size: 14px;
 }
 
-.field input, .field select {
+.field input, .field select, .field textarea {
   padding: 9px 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
   font: inherit;
+  resize: vertical;
 }
 
-.field input:focus {
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(47, 95, 214, 0.15);
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.15);
 }
 
 .password-row {
@@ -1130,20 +1133,181 @@ body {
   border: 0;
 }
 
-.nonprofit-edit-form {
-  max-width: 560px;
+.nonprofit-edit-page {
+  max-width: 880px;
 }
 
-.nonprofit-edit-logo-row {
+.nonprofit-edit-page h1 {
+  font-family: "Bricolage Grotesque", var(--font-sans, system-ui);
+  font-size: 32px;
+  letter-spacing: -0.01em;
+}
+
+.nonprofit-edit-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 28px;
+  align-items: start;
+  margin-top: 24px;
+}
+
+.nonprofit-edit-preview {
+  position: sticky;
+  top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+}
+
+.nonprofit-edit-preview-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.nonprofit-edit-preview-identity {
   display: flex;
   align-items: center;
+  gap: 12px;
+}
+
+.nonprofit-edit-preview-identity h2 {
+  font-family: "Bricolage Grotesque", var(--font-sans, system-ui);
+  font-size: 17px;
+  margin: 0 0 4px;
+  line-height: 1.25;
+}
+
+.nonprofit-edit-preview-description {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.nonprofit-edit-preview-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.nonprofit-edit-preview-fill {
+  animation: none;
+  transition: transform 0.3s ease;
+}
+
+.nonprofit-edit-preview-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.nonprofit-edit-logo-button {
+  justify-content: center;
+}
+
+.nonprofit-edit-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nonprofit-edit-section {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
   gap: 16px;
+}
+
+.nonprofit-edit-section-heading h2 {
+  font-family: "Bricolage Grotesque", var(--font-sans, system-ui);
+  font-size: 16px;
+  margin: 0 0 2px;
+}
+
+.nonprofit-edit-section-heading p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.nonprofit-edit-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.amount-input-wrap {
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.amount-input-wrap span {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background: rgba(30, 144, 255, 0.06);
+  color: var(--muted);
+  font-weight: 600;
+  border-right: 1px solid var(--border);
+}
+
+.amount-input-wrap input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  padding: 9px 10px;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  background: transparent;
+}
+
+.amount-input-wrap input:focus {
+  outline: none;
+}
+
+.amount-input-wrap:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.15);
 }
 
 .nonprofit-edit-actions {
   display: flex;
   gap: 12px;
   align-items: center;
+}
+
+@media (max-width: 760px) {
+  .nonprofit-edit-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .nonprofit-edit-preview {
+    position: static;
+  }
+
+  .nonprofit-edit-field-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* The browse grid genuinely fills extra width with more columns of real
